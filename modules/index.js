@@ -20,6 +20,8 @@ import {
   sendHTML
 } from './ResponseUtils'
 
+import { minifiedPathMap } from './minifiedPathMap'
+
 const OneMinute = 60
 const OneDay = OneMinute * 60 * 24
 const OneYear = OneDay * 365
@@ -206,11 +208,17 @@ export const createRequestHandler = (options = {}) => {
           const queryMain = query && query.main
 
           if (queryMain) {
+            if (queryMain === "min"){
+              mainFilename = minifiedPathMap[packageName]
+            }
+            else {
             if (!(queryMain in packageConfig))
               return sendNotFoundError(res, `field "${queryMain}" in ${displayName}/package.json`)
 
             mainFilename = packageConfig[queryMain]
-          } else {
+            }
+          }
+          if(!mainFilename) {
             // We only support the "alternate main" browser spec for now.
             if (typeof packageConfig.browser === 'string') {
               mainFilename = packageConfig.browser
