@@ -12,7 +12,9 @@
     "prepublish": "node ./scripts/build.js",
     "lint": "eslint modules",
     "test-watch": "node_modules/.bin/mocha --require babel-register --watch modules",
-    "test": "npm run lint"
+    "test-once": "node_modules/.bin/mocha --require babel-register modules",
+    "test-ci": "npm run lint && npm run test-once",
+    "test": "npm run test-ci"
   },
   "dependencies": {
     "archiver": "^1.0.0",
